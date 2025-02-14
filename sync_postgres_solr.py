@@ -1,16 +1,9 @@
 import psycopg2
 import pysolr
-from helpers.enviroment import URL_SOLR
-
+from helpers.enviroment import URL_SOLR, URL_DB 
 
 def get_pg_connection():
-    return psycopg2.connect(
-    dbname="db_ocupacoes",
-    host="postgres_container",
-    port="5432",
-    user="postgres",
-    password="12345678",
-)   
+    return psycopg2.connect(URL_DB)
 
 solr = pysolr.Solr(URL_SOLR, always_commit=True, timeout=10)
 
