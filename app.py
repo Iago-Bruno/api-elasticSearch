@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 index_template = 'index.html'
 
-@app.route('/index', methods=['POST'])
+@app.route('/sync', methods=['POST'])
 def index_data():
     try:
         # criar_core_solr()  # Cria o core antes de indexar
