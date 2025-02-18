@@ -54,3 +54,4 @@ volumes:
 networks:
   solr_network:
     driver: bridge
+    name: solr_network

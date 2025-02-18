@@ -7,10 +7,9 @@ app = Flask(__name__)
 
 index_template = 'index.html'
 
-@app.route('/sync', methods=['POST'])
+@app.route('/sync', methods=['POST', 'GET', 'UPDATE'])
 def index_data():
     try:
-        # criar_core_solr()  # Cria o core antes de indexar
         solr_docs = dados_postgres()
         if not solr_docs:
             return jsonify({"message": "Nenhum dado encontrado no PostgreSQL"}), 404
