@@ -20,4 +20,4 @@ ENV FLASK_APP=app.py
 EXPOSE 5000
 
 # Rodar o servidor Flask
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:5000", "wsgi:app", "--access-logfile", "-", "--error-logfile", "-"]
