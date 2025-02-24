@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   database:
-    image: rayssanunes/database_image:versao2
+    image: iagobsbruno/database_image:latest
     environment:
       POSTGRES_DB: db_ocupacoes
       POSTGRES_USER: postgres
@@ -19,7 +19,7 @@ services:
         constraints: [ node.role == manager ]
 
   solr:
-    image: rayssanunes/solr_image:versao2
+    image: iagobsbruno/solr_image:latest
     ports:
       - "8983:8983"
     depends_on:
@@ -33,7 +33,7 @@ services:
         constraints: [ node.role == manager ]
 
   flask:
-    image: rayssanunes/flask_image:versao2
+    image: iagobsbruno/flask_image:latest
     ports:
       - "5000:5000"
     environment:
