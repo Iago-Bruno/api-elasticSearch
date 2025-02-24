@@ -32,4 +32,3 @@ if __name__ == "__main__":
     solr_docs = dados_postgres()
     carregar_solr(solr_docs)
     print("Dados transferidos com sucesso para o Solr!")
-

@@ -2,27 +2,24 @@ version: "3.8"
 
 services:
   database:
-    container_name: postgres_container
-    build:
-      context: .
-      dockerfile: postgres.Dockerfile
+    image: rayssanunes/database_image:versao2
     environment:
       POSTGRES_DB: db_ocupacoes
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345678
       PGCLIENTENCODING: UTF8
     ports:
-      - "5432:5432"
+      - "15432:5432"
     volumes:
       - ./data:/csv_data
     networks:
       - solr_network
+    deploy:
+      placement:
+        constraints: [ node.role == manager ]
 
   solr:
-    build:
-      context: .
-      dockerfile: sorl.Dockerfile
-    container_name: solr_container
+    image: rayssanunes/solr_image:versao2
     ports:
       - "8983:8983"
     depends_on:
@@ -31,21 +28,35 @@ services:
       - solr_data:/bitnami/solr
     networks:
       - solr_network
+    deploy:
+      placement:
+        constraints: [ node.role == manager ]
 
   flask:
-    container_name: flask_container
-    build:
-      context: .
-      dockerfile: flask.Dockerfile
+    image: rayssanunes/flask_image:versao2
     ports:
       - "5000:5000"
     environment:
-      - URL_SOLR=http://solr_container:8983/solr/ocupacoes
+      - URL_SOLR=http://solr:8983/solr/ocupacoes
     depends_on:
       - database
       - solr
     networks:
       - solr_network
+    deploy:
+      replicas: 5
+      placement:
+        constraints: [ node.role == worker ]
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8888:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [ node.role == manager ]
 
 volumes:
   postgres_data:
@@ -53,5 +64,4 @@ volumes:
 
 networks:
   solr_network:
-    driver: bridge
-    name: solr_network
+    driver: overlay
