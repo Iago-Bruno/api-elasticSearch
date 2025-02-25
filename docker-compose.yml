@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   database:
-    image: iagobsbruno/database_image:latest
+    image: rayssanunes/database_image3:latest
     environment:
       POSTGRES_DB: db_ocupacoes
       POSTGRES_USER: postgres
@@ -19,7 +19,7 @@ services:
         constraints: [ node.role == manager ]
 
   solr:
-    image: iagobsbruno/solr_image:latest
+    image: rayssanunes/solr_image3:latest
     ports:
       - "8983:8983"
     depends_on:
@@ -33,7 +33,7 @@ services:
         constraints: [ node.role == manager ]
 
   flask:
-    image: iagobsbruno/flask_image:latest
+    image: rayssanunes/flask_image3:latest
     ports:
       - "5000:5000"
     environment:
@@ -47,6 +47,9 @@ services:
       replicas: 5
       placement:
         constraints: [ node.role == worker ]
+    environment:
+      - NODE_NAME={{.Node.Hostname}}
+      #- NODE_NAME=${HOSTNAME}
 
   visualizer:
     image: dockersamples/visualizer:stable
